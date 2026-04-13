@@ -13,17 +13,14 @@ ml_models = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Load the ML model
     print("Loading model...")
     ml_models["model"] = load_model()
     print("Model loaded successfully")
     yield
-    # Clean up the ML models and release the resources
     ml_models.clear()
 
 app = FastAPI(lifespan=lifespan)
 
-# Allow CORS for the Expo React Native app
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -34,16 +31,13 @@ app.add_middleware(
 
 @app.post("/predict")
 async def process_image(file: UploadFile = File(...)):
-    # Save the file to a temporary location
     temp_file_path = f"temp_{file.filename}"
     try:
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        # Predict
         result = predict(ml_models["model"], temp_file_path)
         
-        # Output logic
         if result == 1:
             message = "DMC Action Required"
             action_required = True
@@ -54,8 +48,6 @@ async def process_image(file: UploadFile = File(...)):
         return {"result": result, "message": message, "action_required": action_required}
         
     finally:
-        # Clean up temporary file
-        if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
 
 

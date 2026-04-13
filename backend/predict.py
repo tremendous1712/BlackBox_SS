@@ -35,11 +35,11 @@ def load_model():
         xgboost_feature_names = xgboost_data['xgboost_feature_names']
     
     return {
-        'yolo_bin_model':           YOLO(stage1_path),
-        'yolo_garbage_model':       YOLO(stage2_path),
-        'device':                   data['device'],
-        'xgboost_model':            xgboost_model,
-        'xgboost_feature_names':    xgboost_feature_names,
+        'yolo_bin_model': YOLO(stage1_path),
+        'yolo_garbage_model': YOLO(stage2_path),
+        'device': data['device'],
+        'xgboost_model': xgboost_model,
+        'xgboost_feature_names': xgboost_feature_names,
     }
 
 
