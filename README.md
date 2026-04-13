@@ -25,7 +25,7 @@ Data is sent to the backend `/notify` endpoint.
 
 See SETUP.md for installation and running instructions. 
 
-P.S. Couldn't deployment since PyTorch was too heavy for free tiers and I was out of GCP credits 😅. Works fine locally though.
+P.S. Couldn't deploy since PyTorch was too heavy for free tiers and I was out of GCP credits 😅. Works fine locally though.
 
 ## Frontend
 
