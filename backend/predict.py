@@ -2,8 +2,8 @@ import os
 import pickle
 import tempfile
 import io
-import cv2
 import numpy as np
+from PIL import Image
 from ultralytics import YOLO
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -160,7 +160,19 @@ def predict_scores(model, image_path, garbage_conf_threshold=GARBAGE_CONFIDENCE_
     if ALLOWED_BIN_CLASS_ID is None or NOT_ALLOWED_BIN_CLASS_ID is None:
         raise ValueError(f"Unexpected class names in model: {bin_model_names}")
 
-    image = cv2.imread(str(image_path))
+    try:
+        image = Image.open(str(image_path)).convert('RGB')
+        image = np.array(image)
+    except Exception:
+        return {
+            'stage1_score':      -1.0,
+            'stage1_passed':     0,
+            'trash_can_boxes':   [],
+            'garbage_boxes':     [],
+            'allowed_confs':     [],
+            'not_allowed_confs': [],
+            'garbage_confs':     [],
+        }
     if image is None:
         return {
             'stage1_score':      -1.0,
